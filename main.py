@@ -49,7 +49,9 @@ joindf.show(truncate=False)
 
 # ========= DELETED RECORDS =============
 
-delete_df = joindf.filter("value is null").select("id","yvalue") # Finding deleted records which got deleted
+delete_df = (joindf.filter("value is null").select("id","yvalue")
+             .withColumnRenamed("yvalue","value")
+             ) # Finding deleted records which got deleted
 
 # ========= NEW RECORDS =============
 new_records_df = joindf.filter("yvalue is null").select("id","value") # Finding new records which got added
@@ -65,14 +67,14 @@ json_compare_df.show(truncate=False)
 
 print("========= DELETED RECORDS =============")
 delete_df.show()
-delete_df.coalesce(1).write.csv("output/batch2/deleted_records",mode="overwrite")
+delete_df.coalesce(1).write.csv("output/batch2/deleted_records",mode="overwrite",header="true")
 
 print("========= New/Updated RECORDS =============")
 new_updated_df = json_compare_df.filter("isequal == false").select("id","value").union(new_records_df)
 new_updated_df.show()
-new_updated_df.coalesce(1).write.csv("output/batch2/new_updated_records",mode="overwrite")
+new_updated_df.coalesce(1).write.csv("output/batch2/new_updated_records",mode="overwrite",header="true")
 
 print("========= Existing RECORDS =============")
-existing_df = json_compare_df.filter("isequal == 'true'")
+existing_df = json_compare_df.filter("isequal == 'true'").select("id","value")
 existing_df.show()
-existing_df.coalesce(1).write.csv("output/batch2/existing_records",mode="overwrite")
+existing_df.coalesce(1).write.csv("output/batch2/existing_records",mode="overwrite",header="true")
