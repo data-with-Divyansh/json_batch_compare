@@ -1,0 +1,4 @@
+id,value,batchid
+2,"{\"name\": \"rani\", \"students\": [\"David\", \"Eva\", \"Frank\"]}",2
+4,"{\"name\": \"visu\", \"students\": [\"Ron\", \"Harry\", \"Eli\"]}",2
+5,"{\"name\": \"siji\", \"students\": [\"Sam\", \"Robert\", \"Alex\"]}",2
